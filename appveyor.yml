@@ -9,5 +9,9 @@ build_script:
   - ps: dotnet restore
   - ps: cd InstagramApi
   - ps: dotnet --verbose build
+  - ps: cd ../InstagramApi.Tests
+  - ps: dotnet --verbose build
   
-test: off 
+test: on
+    assemblies:
+     - '**\*.Tests.dll'

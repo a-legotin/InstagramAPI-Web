@@ -12,3 +12,5 @@ script:
   - dotnet restore
   - cd InstagramApi
   - dotnet --verbose build
+  - cd ../InstagramApi.Tests
+  - dotnet --verbose build
