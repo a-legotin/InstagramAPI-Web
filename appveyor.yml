@@ -12,6 +12,6 @@ build_script:
   - ps: cd ../InstagramApi.Tests
   - ps: dotnet --verbose build
   
-test: on
+test:
     assemblies:
      - '**\*.Tests.dll'
