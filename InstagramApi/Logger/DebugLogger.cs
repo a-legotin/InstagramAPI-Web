@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InstagramApi
+namespace InstagramApi.Logger
 {
-    public class InstaApi
+    public class DebugLogger : ILogger
     {
-        public InstaApi()
-        {
-        }
     }
 }
