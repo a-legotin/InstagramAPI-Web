@@ -12,6 +12,7 @@ build_script:
   - ps: cd ../InstagramApi.Tests
   - ps: dotnet restore
   - ps: dotnet --verbose build
+  - ps: dotnet --verbose test
   
 test:
     assemblies:
