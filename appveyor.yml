@@ -13,3 +13,5 @@ build_script:
   - ps: dotnet restore
   - ps: dotnet --verbose build
   - ps: dotnet --verbose test
+
+test: off
