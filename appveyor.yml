@@ -14,4 +14,10 @@ build_script:
   - ps: dotnet --verbose build
   - ps: dotnet --verbose test
 
+assembly_info:
+  patch: true
+  file: project.json
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
 test: off
