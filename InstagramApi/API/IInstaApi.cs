@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using InstagramApi.Classes;
 
-namespace InstagramApi
+namespace InstagramApi.API
 {
     public interface IInstaApi
     {
         InstaUser GetUser();
         Task<InstaUser> GetUserAsync();
+        InstaPostList GetUserPosts();
+        Task<InstaPostList> GetUserPostsAsync();
     }
 }

@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using InstagramApi.API;
 using InstagramApi.Classes;
 using InstagramApi.Converters;
 using InstagramApi.Logger;
 using InstagramApi.ResponseWrappers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace InstagramApi
+namespace InstagramApi.API
 {
     public class InstaApi : IInstaApi
     {
+        private readonly HttpClient _httpClient;
+        private readonly string _username;
         private ILogger _logger;
-        private string _username;
-        private HttpClient _httpClient;
 
 
         public InstaApi()
@@ -28,30 +25,75 @@ namespace InstagramApi
         {
             this._username = _username;
             this._logger = _logger;
-        }
-
-        public InstaUser GetUser()
-        {
-            var userTask = GetUserAsync();
-            return userTask.Result;
-
+            this._httpClient = _httpClient;
         }
 
         public async Task<InstaUser> GetUserAsync()
         {
-            var user = new InstaUser();
             string userUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.USER_PROFILE_POSTFIX}";
+            IObjectConverter<InstaUser, InstaResponseUser> converter = null;
             var stream = await _httpClient.GetStreamAsync(userUrl);
             using (var reader = new StreamReader(stream))
             {
-                var json = await reader.ReadToEndAsync();
-                var root = Newtonsoft.Json.Linq.JObject.Parse(json);
+                var json = reader.ReadToEnd();
+                var root = JObject.Parse(json);
                 var userObject = root["user"];
                 var instaresponse = JsonConvert.DeserializeObject<InstaResponseUser>(userObject.ToString());
-                var converter = ConvertersFabric.GetUserConverter(instaresponse);
-                return converter.Convert();
+                converter = ConvertersFabric.GetUserConverter(instaresponse);
             }
+            return converter.Convert();
         }
 
+        public async Task<InstaPostList> GetUserPostsAsync()
+        {
+            var posts = new InstaPostList();
+            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.MEDIA}";
+            string html;
+
+            var stream = await _httpClient.GetStreamAsync(mediaUrl);
+            using (var reader = new StreamReader(stream))
+            {
+                html = reader.ReadToEnd();
+            }
+
+            var instaresponse = JsonConvert.DeserializeObject<InstaResponse>(html);
+            var converter = ConvertersFabric.GetPostsConverter(instaresponse);
+            posts.AddRange(converter.Convert());
+            while (instaresponse.MoreAvailable)
+            {
+                instaresponse = _getUserPostsResponseWithMaxId(instaresponse.GetLastId());
+                converter = ConvertersFabric.GetPostsConverter(instaresponse);
+                posts.AddRange(converter.Convert());
+            }
+            return posts;
+        }
+
+        private InstaResponse _getUserPostsResponseWithMaxId(string Id)
+        {
+            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.MAX_MEDIA_ID_POSTFIX}{Id}";
+            string html;
+            var task = _httpClient.GetStreamAsync(mediaUrl);
+            using (var reader = new StreamReader(task.Result))
+            {
+                html = reader.ReadToEnd();
+            }
+            return JsonConvert.DeserializeObject<InstaResponse>(html);
+        }
+
+        #region sync methods
+
+        public InstaUser GetUser()
+        {
+            var user = GetUserAsync().Result;
+            return user;
+        }
+
+        public InstaPostList GetUserPosts()
+        {
+            var posts = GetUserPostsAsync().Result;
+            return posts;
+        }
+
+        #endregion
     }
 }

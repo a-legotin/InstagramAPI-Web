@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 using InstagramApi.Logger;
 
 namespace InstagramApi.API
 {
     public class InstaApiBuilder
     {
-        ILogger _logger;
-        string _username;
-        HttpClient _httpClient;
+        private HttpClient _httpClient = new HttpClient();
+        private ILogger _logger;
+        private string _username;
 
         public IInstaApi Build()
         {
