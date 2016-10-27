@@ -18,6 +18,7 @@ build_script:
   - ps: dotnet restore
   - ps: dotnet --verbose build
   - ps: dotnet --verbose test
+  - ps: cd ..
 
 assembly_info:
   patch: true
