@@ -26,18 +26,25 @@ assembly_info:
   file: project.json
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
+  
+artifacts:
 
+  - path: InstagramApi\bin\$(configuration)\netstandard1.6\*.dll
+    name: dlls
+    
+  - path: '**\*.nupkg'
+  
 deploy:
   - provider: GitHub
     auth_token:
       secure: FE6k4kAwz++t3+H7UvZkUELVZsx8DIjSOM1R3ZVT7YgqwQXuMKFQpDM5HmQobF22
-    artifact: '**\*.nupkg', InstagramApi\bin\release\netstandard1.6\*.dll
+    artifact: /.*\.nupkg/
     draft: false
     prerelease: true
     on:
-      branch: release
+        branch: release
   - provider: NuGet
     api_key:
-      secure: At3FDhivtW6bQz/WXdwE6RzuFeouCMag3htqBE/1uuTJnFmHB8hU9gCy31ORFWtS
-    artifact: '**\*.nupkg'
+    secure: At3FDhivtW6bQz/WXdwE6RzuFeouCMag3htqBE/1uuTJnFmHB8hU9gCy31ORFWtS
+    artifact: /.*\.nupkg/
 test: off
