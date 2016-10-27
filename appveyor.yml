@@ -14,6 +14,7 @@ build_script:
   - ps: dotnet restore
   - ps: cd InstagramApi
   - ps: dotnet --verbose build
+  - ps: dotnet --verbose pack
   - ps: cd ../InstagramApi.Tests
   - ps: dotnet restore
   - ps: dotnet --verbose build
@@ -37,5 +38,4 @@ deploy:
     prerelease: false
     on:
       branch: release                # release from master branch only
-      appveyor_repo_tag: true       # deploy on tag push only
 test: off
