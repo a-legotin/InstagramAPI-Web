@@ -6,7 +6,11 @@ configuration: Release
 branches:
   only:
     - release
-
+build:
+  publish_nuget: true             # package projects with .nuspec files and push to artifacts
+  publish_nuget_symbols: true     # generate and publish NuGet symbol packages
+  include_nuget_references: true  # add -IncludeReferencedProjects option while packaging NuGet artifacts
+  
 build_script:
   # dotnet info
   - ps: dotnet --info
