@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: 1.0.0.{build}
 os: Visual Studio 2015
 platform: Any CPU
 configuration: Release
@@ -6,18 +6,17 @@ configuration: Release
 branches:
   only:
     - release
-before_build:
- - ps: cat InstagramApi\project.json
- - ps: cat InstagramApi.Tests\project.json
+    - master
+
+skip_tags: true
+
 build:
   publish_nuget: true             # package projects with .nuspec files and push to artifacts
   publish_nuget_symbols: true     # generate and publish NuGet symbol packages
   include_nuget_references: true  # add -IncludeReferencedProjects option while packaging NuGet artifacts
   
 build_script:
-  # dotnet info
   - ps: dotnet --info
-  # Run dotnet new 
   - ps: dotnet restore
   - ps: cd InstagramApi
   - ps: dotnet --verbose build
@@ -31,7 +30,7 @@ build_script:
 assembly_info:
   patch: true
   file: project.json
-  assembly_version: "1.0.{build}"
+  assembly_version: "{version}"
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
   
