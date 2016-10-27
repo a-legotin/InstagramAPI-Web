@@ -3,7 +3,7 @@ os: Visual Studio 2015
 platform: Any CPU
 branches:
   only:
-    - release
+    - master
 
 build_script:
   # dotnet info
