@@ -37,7 +37,7 @@ deploy:
       secure: FE6k4kAwz++t3+H7UvZkUELVZsx8DIjSOM1R3ZVT7YgqwQXuMKFQpDM5HmQobF22
     artifact: /nugetpack/*.nupkg, InstagramApi/bin/release/netstandard1.6 /*.dll
     draft: false
-    prerelease: false
+    prerelease: true
     on:
       branch: release                # release from master branch only
 test: off
