@@ -33,6 +33,8 @@ environment:
 
 deploy:
   - provider: GitHub
+    auth_token:
+      secure: FE6k4kAwz++t3+H7UvZkUELVZsx8DIjSOM1R3ZVT7YgqwQXuMKFQpDM5HmQobF22
     artifact: /.*\.nupkg/           # upload all NuGet packages to release assets
     draft: false
     prerelease: false
