@@ -1,6 +1,7 @@
 version: 1.0.{build}
 os: Visual Studio 2015
 platform: Any CPU
+configuration: Release
 
 branches:
   only:
@@ -24,4 +25,15 @@ assembly_info:
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
 
+environment:
+  git_access_token:
+    secure: rgNPj4/9Qv2wWDiq1a/IBZmwR1QAvL181hj707JArmQUyTROThxqGfbB4OPyvfeu
+
+on_success:
+  - git config --global credential.helper store
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:git_access_token):x-oauth-basic@github.com`n"
+  - git config --global user.email "mrproz@yandex.ru"
+  - git config --global user.name "Alexander Legotin"
+  - git commit "new version upcoming!"
+  - git push
 test: off
