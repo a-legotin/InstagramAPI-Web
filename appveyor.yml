@@ -6,7 +6,9 @@ configuration: Release
 branches:
   only:
     - release
-
+before_build:
+ - ps: cat InstagramApi\project.json
+ - ps: cat InstagramApi.Tests\project.json
 build:
   publish_nuget: true             # package projects with .nuspec files and push to artifacts
   publish_nuget_symbols: true     # generate and publish NuGet symbol packages
