@@ -27,17 +27,18 @@ assembly_info:
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
 
-environment:
-  git_access_token:
-    secure: FE6k4kAwz++t3+H7UvZkUELVZsx8DIjSOM1R3ZVT7YgqwQXuMKFQpDM5HmQobF22
-
 deploy:
   - provider: GitHub
     auth_token:
       secure: FE6k4kAwz++t3+H7UvZkUELVZsx8DIjSOM1R3ZVT7YgqwQXuMKFQpDM5HmQobF22
-    artifact: /nugetpack/*.nupkg, InstagramApi/bin/release/netstandard1.6 /*.dll
+    artifact: '**\*.nupkg', InstagramApi\bin\release\netstandard1.6\*.dll
     draft: false
     prerelease: true
     on:
-      branch: release                # release from master branch only
+      branch: release
+  - provider: NuGet
+    server: https://my.nuget.server/feed
+    api_key:
+      secure: At3FDhivtW6bQz/WXdwE6RzuFeouCMag3htqBE/1uuTJnFmHB8hU9gCy31ORFWtS
+    artifact: '**\*.nupkg'
 test: off
