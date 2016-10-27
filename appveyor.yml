@@ -37,7 +37,6 @@ deploy:
     on:
       branch: release
   - provider: NuGet
-    server: https://my.nuget.server/feed
     api_key:
       secure: At3FDhivtW6bQz/WXdwE6RzuFeouCMag3htqBE/1uuTJnFmHB8hU9gCy31ORFWtS
     artifact: '**\*.nupkg'
