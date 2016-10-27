@@ -14,7 +14,7 @@ build_script:
   - ps: dotnet restore
   - ps: cd InstagramApi
   - ps: dotnet --verbose build
-  - ps: dotnet --verbose pack
+  - ps: dotnet --verbose pack -o ../nugetpack -c release
   - ps: cd ../InstagramApi.Tests
   - ps: dotnet restore
   - ps: dotnet --verbose build
@@ -29,13 +29,13 @@ assembly_info:
 
 environment:
   git_access_token:
-    secure: rgNPj4/9Qv2wWDiq1a/IBZmwR1QAvL181hj707JArmQUyTROThxqGfbB4OPyvfeu
+    secure: FE6k4kAwz++t3+H7UvZkUELVZsx8DIjSOM1R3ZVT7YgqwQXuMKFQpDM5HmQobF22
 
 deploy:
   - provider: GitHub
     auth_token:
       secure: FE6k4kAwz++t3+H7UvZkUELVZsx8DIjSOM1R3ZVT7YgqwQXuMKFQpDM5HmQobF22
-    artifact: /.*\.nupkg/           # upload all NuGet packages to release assets
+    artifact: /nugetpack/*.nupkg, InstagramApi/bin/release/netstandard1.6 /*.dll
     draft: false
     prerelease: false
     on:
