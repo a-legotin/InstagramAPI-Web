@@ -1,6 +1,9 @@
 version: 1.0.{build}
 os: Visual Studio 2015
 platform: Any CPU
+branches:
+  only:
+    - release
 
 build_script:
   # dotnet info
@@ -13,11 +16,5 @@ build_script:
   - ps: dotnet restore
   - ps: dotnet --verbose build
   - ps: dotnet --verbose test
-
-assembly_info:
-  patch: true
-  file: project.json
-  assembly_file_version: "{version}"
-  assembly_informational_version: "{version}"
 
 test: off
