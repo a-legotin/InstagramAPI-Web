@@ -28,7 +28,7 @@ build_script:
 assembly_info:
   patch: true
   file: project.json
- assembly_version: "1.0.{build}"
+  assembly_version: "1.0.{build}"
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
   
