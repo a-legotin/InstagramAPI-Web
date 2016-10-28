@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: 1.1.{build}
 os: Visual Studio 2015
 platform: Any CPU
 configuration: Release
@@ -47,7 +47,7 @@ deploy:
       secure: FE6k4kAwz++t3+H7UvZkUELVZsx8DIjSOM1R3ZVT7YgqwQXuMKFQpDM5HmQobF22
     artifact: /.*\.nupkg/, dlls
     draft: false
-    prerelease: true
+    prerelease: false
     on:
       branch: release
       platform: Any CPU
