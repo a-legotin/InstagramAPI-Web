@@ -4,10 +4,10 @@ namespace InstagramApi.Classes
 {
     public class InstaPost
     {
-        public InstaPost(int id, int userId, string code)
+        public InstaPost(int id, InstaUser user, string code)
         {
             Id = id;
-            UserId = userId;
+            User = user;
             Code = code;
         }
 
@@ -16,8 +16,8 @@ namespace InstagramApi.Classes
         }
 
         public int Id { get; set; }
-        public long UserId { get; set; }
-        public string Url { get; set; }
+        public long UserId => User.Id;
+        public InstaUser User { get; set; }
         public string Code { get; set; }
 
         public string Link { get; set; }
@@ -26,7 +26,17 @@ namespace InstagramApi.Classes
 
         public DateTime CreatedTime { get; set; }
 
-        public static InstaPost Empty => new InstaPost(0, 0, string.Empty);
+        public Images Images { get; set; }
+
+        public Likes Likes { get; set; }
+
+        public int LikesCount => Likes?.Count ?? 0;
+
+        public static InstaPost Empty => new InstaPost(0, InstaUser.Empty, string.Empty);
+
+        public InstaPostType Type { get; set; }
+
+        public InstaLocation Localtion { get; set; }
 
         public bool Equals(InstaPost post)
         {

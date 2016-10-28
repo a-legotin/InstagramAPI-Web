@@ -9,11 +9,12 @@ namespace InstagramApi.Tests
 {
     public class InstaApiTest
     {
-        [Fact]
-        public void GetUserTest()
+        [Theory]
+        [InlineData("alex_codegarage")]
+        [InlineData("instagram")]
+        public void GetUserTest(string username)
         {
             //arrange
-            string username = "alex_codegarage";
             var apiInstance = TestHelpers.GetDefaultInstaApiInstance(username);
             //act
             var user = apiInstance.GetUser();

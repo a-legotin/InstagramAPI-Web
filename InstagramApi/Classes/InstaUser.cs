@@ -12,9 +12,11 @@
 
         public long InstaIdentifier { get; set; }
 
-        public static InstaUser Empty
-        {
-            get { return new InstaUser {FullName = string.Empty, Id = 0, UserName = string.Empty}; }
-        }
+        public string ExternalUrl { get; set; }
+        public string IsVerified { get; set; }
+
+        public int FollowedByCount { get; set; }
+
+        public static InstaUser Empty => new InstaUser {FullName = string.Empty, Id = 0, UserName = string.Empty};
     }
 }

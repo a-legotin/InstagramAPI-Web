@@ -1,5 +1,4 @@
-﻿using System;
-using InstagramApi.Classes;
+﻿using InstagramApi.Classes;
 using InstagramApi.ResponseWrappers;
 
 namespace InstagramApi.Converters
@@ -15,48 +14,10 @@ namespace InstagramApi.Converters
         {
             return new InstaUsersConverter {SourceObject = instaresponse};
         }
-    }
 
-    public class InstaPostsConverter : IObjectConverter<InstaPostList, InstaResponse>
-    {
-        public InstaResponse SourceObject { get; set; }
-
-        public InstaPostList Convert()
+        public static IObjectConverter<InstaPost, InstaResponseItem> GetSinglePostConverter(InstaResponseItem instaresponse)
         {
-            if (SourceObject == null) throw new ArgumentNullException("Source object");
-            var instaPosts = new InstaPostList();
-            foreach (var post in SourceObject.Items)
-                instaPosts.Add(new InstaPost
-                {
-                    Url = post.Link,
-                    CanViewComment = post.CanViewComment,
-                    Code = post.Code,
-                    CreatedTime = post.CreatedTimeConverted
-                });
-            ;
-            return instaPosts;
+            return new InstaPostConverter { SourceObject = instaresponse };
         }
-    }
-
-    public class InstaUsersConverter : IObjectConverter<InstaUser, InstaResponseUser>
-    {
-        public InstaResponseUser SourceObject { get; set; }
-
-        public InstaUser Convert()
-        {
-            if (SourceObject == null) throw new ArgumentNullException("Source object");
-            var user = new InstaUser();
-            user.FullName = SourceObject.FullName;
-            user.Id = SourceObject.Id;
-            user.ProfilePicture = SourceObject.ProfilePicture;
-            user.UserName = SourceObject.UserName;
-            return user;
-        }
-    }
-
-    internal interface IObjectConverter<T, TT>
-    {
-        TT SourceObject { get; set; }
-        T Convert();
     }
 }
