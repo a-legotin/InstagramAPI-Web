@@ -27,8 +27,10 @@ namespace InstagramApi.ResponseWrappers
 
         [JsonProperty("can_view_comments")]
         public bool CanViewComment { get; set; }
+
         [JsonProperty("user")]
         public InstaResponseUser User { get; set; }
+
         public DateTime CreatedTimeConverted => DateTimeHelper.UnixTimestampToDateTime(double.Parse(CreatedTime));
     }
 }

@@ -6,6 +6,7 @@ namespace InstagramApi.ResponseWrappers
     {
         [JsonProperty("count")]
         public int Count { get; set; }
+
         [JsonProperty("data")]
         public InstaResponseUser[] Users { get; set; }
     }

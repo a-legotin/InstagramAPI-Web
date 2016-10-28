@@ -13,7 +13,7 @@ namespace InstagramApi.Converters
             if (SourceObject == null) throw new ArgumentNullException("Source object");
             var user = new InstaUser
             {
-                Id = SourceObject.Id,     
+                InstaIdentifier = SourceObject.Id
             };
             if (!string.IsNullOrEmpty(SourceObject.FullName)) user.FullName = SourceObject.FullName;
             if (!string.IsNullOrEmpty(SourceObject.ProfilePicture)) user.ProfilePicture = SourceObject.ProfilePicture;

@@ -17,7 +17,7 @@ namespace InstagramApi.Converters
 
         public static IObjectConverter<InstaPost, InstaResponseItem> GetSinglePostConverter(InstaResponseItem instaresponse)
         {
-            return new InstaPostConverter { SourceObject = instaresponse };
+            return new InstaPostConverter {SourceObject = instaresponse};
         }
     }
 }

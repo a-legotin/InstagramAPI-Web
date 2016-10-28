@@ -2,12 +2,10 @@
 using InstagramApi.Logger;
 using Xunit;
 
-
 namespace InstagramApi.Tests
 {
     public class ApiInstanceBuilderTest
     {
-
         [Fact]
         public void CreateApiInstance()
         {
@@ -25,5 +23,7 @@ namespace InstagramApi.Tests
         }
     }
 
-    internal class TestLogger : ILogger { }
+    internal class TestLogger : ILogger
+    {
+    }
 }

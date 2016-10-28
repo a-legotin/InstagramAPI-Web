@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 using InstagramApi.API;
 
 namespace InstagramApi.Tests
@@ -11,10 +8,10 @@ namespace InstagramApi.Tests
         public static IInstaApi GetDefaultInstaApiInstance(string username)
         {
             var apiInstance = new InstaApiBuilder()
-              .SetUserName(username)
-              .UseLogger(new TestLogger())
-              .UseHttpClient(new System.Net.Http.HttpClient())
-              .Build();
+                .SetUserName(username)
+                .UseLogger(new TestLogger())
+                .UseHttpClient(new HttpClient())
+                .Build();
             return apiInstance;
         }
     }

@@ -6,8 +6,6 @@
 
         public string ProfilePicture { get; set; }
 
-        public long Id { get; set; }
-
         public string FullName { get; set; }
 
         public long InstaIdentifier { get; set; }
@@ -17,6 +15,6 @@
 
         public int FollowedByCount { get; set; }
 
-        public static InstaUser Empty => new InstaUser {FullName = string.Empty, Id = 0, UserName = string.Empty};
+        public static InstaUser Empty => new InstaUser {FullName = string.Empty, UserName = string.Empty};
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using InstagramApi.API;
+﻿using System.Linq;
 using Xunit;
 
 namespace InstagramApi.Tests
@@ -35,7 +31,7 @@ namespace InstagramApi.Tests
             var posts = apiInstance.GetUserPosts();
             //assert
             Assert.NotNull(posts);
-            if(posts.Count > 0)
+            if (posts.Count > 0)
                 Assert.Equal(posts.FirstOrDefault().UserId, user.InstaIdentifier);
         }
     }
