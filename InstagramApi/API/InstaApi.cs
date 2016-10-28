@@ -30,7 +30,7 @@ namespace InstagramApi.API
 
         public async Task<InstaUser> GetUserAsync()
         {
-            string userUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.USER_PROFILE_POSTFIX}";
+            string userUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.GET_ALL_POSTFIX}";
             IObjectConverter<InstaUser, InstaResponseUser> converter = null;
             var stream = await _httpClient.GetStreamAsync(userUrl);
             using (var reader = new StreamReader(stream))
@@ -48,15 +48,15 @@ namespace InstagramApi.API
         {
             var posts = new InstaPostList();
             string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.MEDIA}";
-            string html;
+            string json;
 
             var stream = await _httpClient.GetStreamAsync(mediaUrl);
             using (var reader = new StreamReader(stream))
             {
-                html = reader.ReadToEnd();
+                json = reader.ReadToEnd();
             }
 
-            var instaresponse = JsonConvert.DeserializeObject<InstaResponse>(html);
+            var instaresponse = JsonConvert.DeserializeObject<InstaResponse>(json);
             var converter = ConvertersFabric.GetPostsConverter(instaresponse);
             posts.AddRange(converter.Convert());
             while (instaresponse.MoreAvailable)
@@ -68,16 +68,33 @@ namespace InstagramApi.API
             return posts;
         }
 
+
+        public async Task<InstaMedia> GetMediaByCodeAsync(string postCode)
+        {
+            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{InstaApiConstants.P_SUFFIX}{postCode}{InstaApiConstants.GET_ALL_POSTFIX}";
+            var stream = await _httpClient.GetStreamAsync(mediaUrl);
+            InstaResponseMedia mediaResponse;
+            using (var reader = new StreamReader(stream))
+            {
+                var json = reader.ReadToEnd();
+                var root = JObject.Parse(json);
+                var mediaObject = root["media"];
+                mediaResponse = JsonConvert.DeserializeObject<InstaResponseMedia>(mediaObject.ToString());
+            }
+            var converter = ConvertersFabric.GetSingleMediaConverter(mediaResponse);
+            return converter.Convert();
+        }
+
         private InstaResponse _getUserPostsResponseWithMaxId(string Id)
         {
             string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.MAX_MEDIA_ID_POSTFIX}{Id}";
-            string html;
+            string json;
             var task = _httpClient.GetStreamAsync(mediaUrl);
             using (var reader = new StreamReader(task.Result))
             {
-                html = reader.ReadToEnd();
+                json = reader.ReadToEnd();
             }
-            return JsonConvert.DeserializeObject<InstaResponse>(html);
+            return JsonConvert.DeserializeObject<InstaResponse>(json);
         }
 
         #region sync methods
@@ -92,6 +109,12 @@ namespace InstagramApi.API
         {
             var posts = GetUserPostsAsync().Result;
             return posts;
+        }
+
+        public InstaMedia GetMediaByCode(string postCode)
+        {
+            var media = GetMediaByCodeAsync(postCode).Result;
+            return media;
         }
 
         #endregion

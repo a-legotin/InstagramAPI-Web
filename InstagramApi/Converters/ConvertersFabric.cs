@@ -19,5 +19,10 @@ namespace InstagramApi.Converters
         {
             return new InstaPostConverter {SourceObject = instaresponse};
         }
+
+        public static IObjectConverter<InstaMedia, InstaResponseMedia> GetSingleMediaConverter(InstaResponseMedia responseMedia)
+        {
+            return new InstaMediaConverter {SourceObject = responseMedia};
+        }
     }
 }
