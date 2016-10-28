@@ -1,7 +1,8 @@
 # InstagramApi
-Tokenless API for Instagram. Get account information, media, explore tags and user feed without any authorization, applications and other crap.
+Tokenless API for Instagram. Get account information, media, explore tags and user feed without any applications and other crap.
+This wrapper provides basic media from instagram, some of them even without authorization
 
-#### Current version: 1.0.0 [Under development]
+#### Current version: 1.1.* [Under development]
 
 #### Build status
 ----
@@ -10,11 +11,14 @@ Tokenless API for Instagram. Get account information, media, explore tags and us
 [![Build Status](https://travis-ci.org/a-legotin/InstagramApi.svg?branch=master)](https://travis-ci.org/a-legotin/InstagramApi)
 
 ----
-## Cross-platmorm by design
-Build with dotnet core. Can be executed on Mac, Linux, Windows.
+## Cross-platform by design
+Build with dotnet core. Can be used on Mac, Linux, Windows.
+
+## Easy to install
+Use library as dll, reference from nuget or clone source code.
 
 ## Easy to use
-Use builder to get Insta API instance:
+#### Use builder to get Insta API instance:
 ```c#
 var api = new InstaApiBuilder()
                 .UseLogger(new SomeLogger())
@@ -22,6 +26,18 @@ var api = new InstaApiBuilder()
                 .SetUserName(SomeUsername)
                 .Build();
 ```
+##### Note: every API method has Async implementation as well
+#### Get user:
+```c#
+InstaUser user = api.GetUser();
+```
 
-## Easy to install
-Use library as dll, reference from nuget or clone source code.
+#### Get all user posts:
+```c#
+InstaPostList posts = api.GetUserPosts();
+```
+
+#### Get media by its code:
+```c#
+InstaMedia mediaItem = api.GetMediaByCode();
+```
