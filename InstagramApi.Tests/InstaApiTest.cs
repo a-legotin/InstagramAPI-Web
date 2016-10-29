@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using InstagramApi.API;
 using Xunit;
 
 namespace InstagramApi.Tests
@@ -50,6 +52,52 @@ namespace InstagramApi.Tests
             //assert
             Assert.NotNull(media);
             Assert.Equal(media.Code, mediaCode);
+        }
+
+        [Fact]
+        public void UserLoginSuccessTest()
+        {
+            //arrange
+            var username = "alex_codegarage";
+            var password = Environment.GetEnvironmentVariable("instaapiuserpassword");
+            var apiInstance =
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+            //act
+            bool success = apiInstance.Login();
+
+            //assert
+            Assert.True(success);
+            Assert.True(apiInstance.IsUserAuthenticated);
+        }
+
+        [Fact]
+        public void UserLoginEmptyPasswordTest()
+        {
+            //arrange
+            var username = "alex_codegarage";
+            var password = Environment.GetEnvironmentVariable("instaapiuserpassword");
+            var apiInstance =
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+            //act
+            Action loginAction = () => apiInstance.Login();
+            //assert
+            Assert.Throws<AggregateException>(loginAction);
+        }
+
+        [Fact]
+        public void UserLoginFailTest()
+        {
+            //arrange
+            var username = "alex_codegarage";
+            var password = "sometestpassword";
+            var apiInstance =
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+
+            //act
+            bool success = apiInstance.Login();
+            //assert
+            Assert.False(success);
+            Assert.False(apiInstance.IsUserAuthenticated);
         }
     }
 }

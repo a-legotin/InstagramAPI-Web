@@ -33,7 +33,11 @@ assembly_info:
   assembly_version: "{version}"
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
-  
+
+environment:
+  instaapiuserpassword:
+    secure: 2DmbP+MHwes0M3ahyTWDkA==
+
 artifacts:
 
   - path: InstagramApi\bin\$(configuration)\netstandard1.6\*.dll

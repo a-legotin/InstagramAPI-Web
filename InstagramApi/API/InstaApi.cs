@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using InstagramApi.Classes;
@@ -13,24 +16,25 @@ namespace InstagramApi.API
     public class InstaApi : IInstaApi
     {
         private readonly HttpClient _httpClient;
-        private readonly string _username;
+        private readonly HttpClientHandler _httpHandler;
+        private readonly UserCredentials _user;
         private ILogger _logger;
 
 
-        public InstaApi()
+        public InstaApi(UserCredentials _user, ILogger _logger, HttpClient _httpClient, HttpClientHandler _httpHandler)
         {
-        }
-
-        public InstaApi(string _username, ILogger _logger, HttpClient _httpClient)
-        {
-            this._username = _username;
+            this._user = _user;
             this._logger = _logger;
             this._httpClient = _httpClient;
+            this._httpHandler = _httpHandler;
         }
+
+        public bool IsUserAuthenticated { get; private set; }
+
 
         public async Task<InstaUser> GetUserAsync()
         {
-            string userUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.GET_ALL_POSTFIX}";
+            string userUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.GET_ALL_POSTFIX}";
             IObjectConverter<InstaUser, InstaResponseUser> converter = null;
             var stream = await _httpClient.GetStreamAsync(userUrl);
             using (var reader = new StreamReader(stream))
@@ -47,7 +51,7 @@ namespace InstagramApi.API
         public async Task<InstaPostList> GetUserPostsAsync()
         {
             var posts = new InstaPostList();
-            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.MEDIA}";
+            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.MEDIA}";
             string json;
 
             var stream = await _httpClient.GetStreamAsync(mediaUrl);
@@ -85,16 +89,35 @@ namespace InstagramApi.API
             return converter.Convert();
         }
 
-        private InstaResponse _getUserPostsResponseWithMaxId(string Id)
+        public async Task<bool> LoginAsync()
         {
-            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_username}{InstaApiConstants.MAX_MEDIA_ID_POSTFIX}{Id}";
-            string json;
-            var task = _httpClient.GetStreamAsync(mediaUrl);
-            using (var reader = new StreamReader(task.Result))
+            if (string.IsNullOrEmpty(_user.UserName) || string.IsNullOrEmpty(_user.Password))
+                throw new ArgumentException("user name and password must be specified");
+            var firstResponse = await _httpClient.GetAsync(_httpClient.BaseAddress);
+            var csrftoken = string.Empty;
+            var cookies = _httpHandler.CookieContainer.GetCookies(_httpClient.BaseAddress);
+            foreach (Cookie cookie in cookies)
             {
-                json = reader.ReadToEnd();
+                if (cookie.Name == InstaApiConstants.CSRFTOKEN)
+                    csrftoken = cookie.Value;
             }
-            return JsonConvert.DeserializeObject<InstaResponse>(json);
+            var fields = new Dictionary<string, string>
+            {
+                {"username", _user.UserName},
+                {"password", _user.Password}
+            };
+            var request = new HttpRequestMessage(HttpMethod.Post, InstaApiConstants.ACCOUNTS_LOGIN_AJAX);
+            request.Content = new FormUrlEncodedContent(fields);
+
+            request.Headers.Referrer = new Uri(_httpClient.BaseAddress, InstaApiConstants.ACCOUNTS_LOGIN);
+            request.Headers.Add(InstaApiConstants.HEADER_XCSRFToken, csrftoken);
+            request.Headers.Add(InstaApiConstants.HEADER_XInstagramAJAX, "1");
+            request.Headers.Add(InstaApiConstants.HEADER_XRequestedWith, InstaApiConstants.HEADER_XMLHttpRequest);
+
+            var response = await _httpClient.SendAsync(request);
+            var loginInfo = JsonConvert.DeserializeObject<LoginInfo>(await response.Content.ReadAsStringAsync());
+            IsUserAuthenticated = loginInfo.authenticated;
+            return loginInfo.authenticated;
         }
 
         #region sync methods
@@ -116,7 +139,21 @@ namespace InstagramApi.API
             var media = GetMediaByCodeAsync(postCode).Result;
             return media;
         }
-
+        public bool Login()
+        {
+            return LoginAsync().Result;
+        }
         #endregion
+        private InstaResponse _getUserPostsResponseWithMaxId(string Id)
+        {
+            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.MAX_MEDIA_ID_POSTFIX}{Id}";
+            string json;
+            var task = _httpClient.GetStreamAsync(mediaUrl);
+            using (var reader = new StreamReader(task.Result))
+            {
+                json = reader.ReadToEnd();
+            }
+            return JsonConvert.DeserializeObject<InstaResponse>(json);
+        }
     }
 }

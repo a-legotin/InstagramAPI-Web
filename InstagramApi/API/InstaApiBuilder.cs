@@ -1,17 +1,24 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using InstagramApi.Logger;
 
 namespace InstagramApi.API
 {
     public class InstaApiBuilder
     {
-        private HttpClient _httpClient = new HttpClient();
+        private HttpClient _httpClient;
+        private HttpClientHandler _httpHandler = new HttpClientHandler();
         private ILogger _logger;
-        private string _username;
+        private UserCredentials _user;
 
         public IInstaApi Build()
         {
-            var instaApi = new InstaApi(_username, _logger, _httpClient);
+            if (_httpClient == null)
+            {
+                _httpClient = new HttpClient(_httpHandler);
+                _httpClient.BaseAddress = new Uri(InstaApiConstants.INSTAGRAM_URL);
+            }
+            var instaApi = new InstaApi(_user, _logger, _httpClient, _httpHandler);
             return instaApi;
         }
 
@@ -27,9 +34,21 @@ namespace InstagramApi.API
             return this;
         }
 
+        public InstaApiBuilder UseHttpClientHandler(HttpClientHandler handler)
+        {
+            _httpHandler = handler;
+            return this;
+        }
+
         public InstaApiBuilder SetUserName(string username)
         {
-            _username = username;
+            _user = new UserCredentials { UserName = username };
+            return this;
+        }
+
+        public InstaApiBuilder SetUser(UserCredentials user)
+        {
+            _user = user;
             return this;
         }
     }

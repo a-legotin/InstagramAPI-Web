@@ -10,8 +10,16 @@ namespace InstagramApi.Tests
             var apiInstance = new InstaApiBuilder()
                 .SetUserName(username)
                 .UseLogger(new TestLogger())
-                .UseHttpClient(new HttpClient())
                 .Build();
+            return apiInstance;
+        }
+
+        public static IInstaApi GetDefaultInstaApiInstance(UserCredentials user)
+        {
+            var apiInstance = new InstaApiBuilder()
+                 .SetUser(user)
+                 .UseLogger(new TestLogger())
+                 .Build();
             return apiInstance;
         }
     }
