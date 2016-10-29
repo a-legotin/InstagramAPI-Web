@@ -75,9 +75,8 @@ namespace InstagramApi.Tests
         {
             //arrange
             var username = "alex_codegarage";
-            var password = Environment.GetEnvironmentVariable("instaapiuserpassword");
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username });
             //act
             Action loginAction = () => apiInstance.Login();
             //assert
