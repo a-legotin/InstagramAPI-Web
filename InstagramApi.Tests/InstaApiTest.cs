@@ -98,5 +98,23 @@ namespace InstagramApi.Tests
             Assert.False(success);
             Assert.False(apiInstance.IsUserAuthenticated);
         }
+
+        [Fact]
+        public void GetUserFeedTest()
+        {
+            //arrange
+            var username = "alex_codegarage";
+            var password = Environment.GetEnvironmentVariable("instaapiuserpassword");
+            var apiInstance =
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+            //act
+            apiInstance.Login();
+            var feed = apiInstance.GetUserFeed(1);
+            //assert
+            Assert.NotNull(feed);
+            Assert.NotNull(feed.FeedMedia);
+            Assert.NotNull(feed.SuggestedUsers);
+            Assert.True(feed.FeedPageInfo.HasNextPage);
+        }
     }
 }

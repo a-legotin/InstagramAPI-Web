@@ -14,5 +14,8 @@ namespace InstagramApi.API
         Task<InstaMedia> GetMediaByCodeAsync(string postCode);
         bool Login();
         Task<bool> LoginAsync();
+        InstaUserFeed GetUserFeed(int pageCount);
+        Task<InstaUserFeed> GetUserFeedAsync(int pageCount);
+
     }
 }

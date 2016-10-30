@@ -31,7 +31,7 @@ namespace InstagramApi.API
 
         public bool IsUserAuthenticated { get; private set; }
 
-
+        #region async methods
         public async Task<InstaUser> GetUserAsync()
         {
             string userUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.GET_ALL_POSTFIX}";
@@ -120,6 +120,23 @@ namespace InstagramApi.API
             return loginInfo.authenticated;
         }
 
+        public async Task<InstaUserFeed> GetUserFeedAsync(int pageCount)
+        {
+            if (!IsUserAuthenticated) throw new Exception("user must be authenticated");
+            var feedUrl = $"{InstaApiConstants.INSTAGRAM_URL.TrimEnd('/')}{InstaApiConstants.GET_ALL_POSTFIX}";
+            var stream = await _httpClient.GetStreamAsync(feedUrl);
+            InstaFeedResponse feedResponse;
+            using (var reader = new StreamReader(stream))
+            {
+                var json = await reader.ReadToEndAsync();
+                var root = JObject.Parse(json);
+                feedResponse = JsonConvert.DeserializeObject<InstaFeedResponse>(json);
+            }
+            var converter = ConvertersFabric.GetFeedConverter(feedResponse);
+            return converter.Convert();
+        }
+        #endregion
+
         #region sync methods
 
         public InstaUser GetUser()
@@ -143,7 +160,13 @@ namespace InstagramApi.API
         {
             return LoginAsync().Result;
         }
+        public InstaUserFeed GetUserFeed(int pageCount)
+        {
+            return GetUserFeedAsync(pageCount).Result;
+        }
         #endregion
+
+        #region Private methods
         private InstaResponse _getUserPostsResponseWithMaxId(string Id)
         {
             string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.MAX_MEDIA_ID_POSTFIX}{Id}";
@@ -155,5 +178,7 @@ namespace InstagramApi.API
             }
             return JsonConvert.DeserializeObject<InstaResponse>(json);
         }
+        #endregion
+
     }
 }
