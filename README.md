@@ -4,11 +4,9 @@ This wrapper provides basic media from instagram, some of them even without auth
 Note that: there is a [repository based on Instagram API for mobile devices](https://github.com/a-legotin/InstagramAPI). This one Instagram API based on web-version of Instagram and provides only limited set of methods to work with Instagram. 
 
 [![Build status](https://ci.appveyor.com/api/projects/status/nb2h0hyxtkjuskhl?svg=true)](https://ci.appveyor.com/project/a-legotin/instagramapi-web)
-
 [![Build Status](https://travis-ci.org/a-legotin/InstagramAPI-Web.svg?branch=master)](https://travis-ci.org/a-legotin/InstagramAPI-Web)
 
 #### Current version: 1.1.* [Under development]
-
 
 ## Cross-platform by design
 Build with dotnet core. Can be used on Mac, Linux, Windows.
@@ -40,6 +38,10 @@ InstaPostList posts = api.GetUserPosts();
 ```c#
 InstaMedia mediaItem = api.GetMediaByCode();
 ```
+
+####[Known issues](https://github.com/a-legotin/InstagramAPI-Web/issues?q=is%3Aopen+is%3Aissue+label%3Aknown)
+
+####[WIKI](https://github.com/a-legotin/InstagramAPI-Web/wiki)
 
 # License
 
