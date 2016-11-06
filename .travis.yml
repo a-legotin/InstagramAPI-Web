@@ -10,9 +10,9 @@ script:
   - dotnet --info
   # Run dotnet new 
   - dotnet restore
-  - cd InstagramApi
+  - cd InstagramAPI-Web
   - dotnet --verbose build
-  - cd ../InstagramApi.Tests
+  - cd ../InstagramAPI-Web.Tests
   - dotnet --verbose build
   - dotnet --verbose test
   

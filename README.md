@@ -1,6 +1,7 @@
 # InstagramApi
-Tokenless API for Instagram. Get account information, media, explore tags and user feed without any applications and other crap.
+Tokenless, butthurtless private API for Instagram. Get account information, media, explore tags and user feed without any applications and other crap.
 This wrapper provides basic media from instagram, some of them even without authorization.
+Note that: there is a [repository based on Instagram API for mobile devices](https://github.com/a-legotin/InstagramAPI). This one Instagram API based on web-version of Instagram and provides only limited set of methods to work with Instagram. 
 
 [![Build status](https://ci.appveyor.com/api/projects/status/83fewc6yvre766ll?svg=true)](https://ci.appveyor.com/project/a-legotin/instagramapi)
 [![Build Status](https://travis-ci.org/a-legotin/InstagramApi.svg?branch=master)](https://travis-ci.org/a-legotin/InstagramApi)

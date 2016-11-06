@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramApi", "InstagramApi\InstagramApi.xproj", "{71A0247A-EED3-4C4E-BD26-23166711B4AE}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramAPI-Web", "InstagramAPI-Web\InstagramAPI-Web.xproj", "{71A0247A-EED3-4C4E-BD26-23166711B4AE}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramApi.Tests", "InstagramApi.Tests\InstagramApi.Tests.xproj", "{FCB93D64-0287-4AF1-95B5-68AE773F34E3}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramAPI-Web.Tests", "InstagramAPI-Web.Tests\InstagramAPI-Web.Tests.xproj", "{FCB93D64-0287-4AF1-95B5-68AE773F34E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
