@@ -1,4 +1,4 @@
-# InstagramApi
+# InstagramAPI-Web
 Tokenless, butthurtless private API for Instagram. Get account information, media, explore tags and user feed without any applications and other crap.
 This wrapper provides basic media from instagram, some of them even without authorization.
 Note that: there is a [repository based on Instagram API for mobile devices](https://github.com/a-legotin/InstagramAPI). This one Instagram API based on web-version of Instagram and provides only limited set of methods to work with Instagram. 
@@ -7,7 +7,7 @@ Note that: there is a [repository based on Instagram API for mobile devices](htt
 [![Build Status](https://travis-ci.org/a-legotin/InstagramAPI-Web.svg?branch=master)](https://travis-ci.org/a-legotin/InstagramAPI-Web)
 
 #### Current version: 1.1.* [Under development]
-
+#### [Why two separate repos with same mission?](https://github.com/a-legotin/InstagramAPI-Web/wiki/Difference-between-API-Web-and-just-API-repositories)
 ## Cross-platform by design
 Build with dotnet core. Can be used on Mac, Linux, Windows.
 
