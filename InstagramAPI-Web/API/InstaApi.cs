@@ -31,7 +31,25 @@ namespace InstagramApi.API
 
         public bool IsUserAuthenticated { get; private set; }
 
+        #region Private methods
+
+        private InstaResponse _getUserPostsResponseWithMaxId(string Id)
+        {
+            string mediaUrl =
+                $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.MAX_MEDIA_ID_POSTFIX}{Id}";
+            string json;
+            var task = _httpClient.GetStreamAsync(mediaUrl);
+            using (var reader = new StreamReader(task.Result))
+            {
+                json = reader.ReadToEnd();
+            }
+            return JsonConvert.DeserializeObject<InstaResponse>(json);
+        }
+
+        #endregion
+
         #region async methods
+
         public async Task<InstaUser> GetUserAsync()
         {
             string userUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.GET_ALL_POSTFIX}";
@@ -75,7 +93,8 @@ namespace InstagramApi.API
 
         public async Task<InstaMedia> GetMediaByCodeAsync(string postCode)
         {
-            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{InstaApiConstants.P_SUFFIX}{postCode}{InstaApiConstants.GET_ALL_POSTFIX}";
+            string mediaUrl =
+                $"{InstaApiConstants.INSTAGRAM_URL}{InstaApiConstants.P_SUFFIX}{postCode}{InstaApiConstants.GET_ALL_POSTFIX}";
             var stream = await _httpClient.GetStreamAsync(mediaUrl);
             InstaResponseMedia mediaResponse;
             using (var reader = new StreamReader(stream))
@@ -97,10 +116,8 @@ namespace InstagramApi.API
             var csrftoken = string.Empty;
             var cookies = _httpHandler.CookieContainer.GetCookies(_httpClient.BaseAddress);
             foreach (Cookie cookie in cookies)
-            {
                 if (cookie.Name == InstaApiConstants.CSRFTOKEN)
                     csrftoken = cookie.Value;
-            }
             var fields = new Dictionary<string, string>
             {
                 {"username", _user.UserName},
@@ -135,6 +152,7 @@ namespace InstagramApi.API
             var converter = ConvertersFabric.GetFeedConverter(feedResponse);
             return converter.Convert();
         }
+
         #endregion
 
         #region sync methods
@@ -156,29 +174,17 @@ namespace InstagramApi.API
             var media = GetMediaByCodeAsync(postCode).Result;
             return media;
         }
+
         public bool Login()
         {
             return LoginAsync().Result;
         }
+
         public InstaUserFeed GetUserFeed(int pageCount)
         {
             return GetUserFeedAsync(pageCount).Result;
         }
-        #endregion
 
-        #region Private methods
-        private InstaResponse _getUserPostsResponseWithMaxId(string Id)
-        {
-            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.MAX_MEDIA_ID_POSTFIX}{Id}";
-            string json;
-            var task = _httpClient.GetStreamAsync(mediaUrl);
-            using (var reader = new StreamReader(task.Result))
-            {
-                json = reader.ReadToEnd();
-            }
-            return JsonConvert.DeserializeObject<InstaResponse>(json);
-        }
         #endregion
-
     }
 }

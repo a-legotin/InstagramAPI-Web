@@ -16,6 +16,5 @@ namespace InstagramApi.API
         Task<bool> LoginAsync();
         InstaUserFeed GetUserFeed(int pageCount);
         Task<InstaUserFeed> GetUserFeedAsync(int pageCount);
-
     }
 }

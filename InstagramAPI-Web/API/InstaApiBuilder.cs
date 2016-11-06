@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using InstagramApi.Classes;
 using InstagramApi.Logger;
 
 namespace InstagramApi.API
@@ -42,7 +43,7 @@ namespace InstagramApi.API
 
         public InstaApiBuilder SetUserName(string username)
         {
-            _user = new UserCredentials { UserName = username };
+            _user = new UserCredentials {UserName = username};
             return this;
         }
 

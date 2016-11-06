@@ -1,8 +1,8 @@
 ﻿using InstagramApi.API;
-using InstagramApi.Logger;
+using InstagramApi.Tests.Utils;
 using Xunit;
 
-namespace InstagramApi.Tests
+namespace InstagramApi.Tests.Tests
 {
     public class ApiInstanceBuilderTest
     {
@@ -14,9 +14,5 @@ namespace InstagramApi.Tests
                 .Build();
             Assert.NotNull(result);
         }
-    }
-
-    internal class TestLogger : ILogger
-    {
     }
 }

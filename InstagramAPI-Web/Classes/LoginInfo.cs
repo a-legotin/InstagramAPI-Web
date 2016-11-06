@@ -1,4 +1,4 @@
-﻿namespace InstagramApi.API
+﻿namespace InstagramApi.Classes
 {
     internal class LoginInfo
     {

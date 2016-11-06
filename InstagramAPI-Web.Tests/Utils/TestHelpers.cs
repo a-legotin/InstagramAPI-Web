@@ -1,7 +1,7 @@
-﻿using System.Net.Http;
-using InstagramApi.API;
+﻿using InstagramApi.API;
+using InstagramApi.Classes;
 
-namespace InstagramApi.Tests
+namespace InstagramApi.Tests.Utils
 {
     public class TestHelpers
     {
@@ -17,9 +17,9 @@ namespace InstagramApi.Tests
         public static IInstaApi GetDefaultInstaApiInstance(UserCredentials user)
         {
             var apiInstance = new InstaApiBuilder()
-                 .SetUser(user)
-                 .UseLogger(new TestLogger())
-                 .Build();
+                .SetUser(user)
+                .UseLogger(new TestLogger())
+                .Build();
             return apiInstance;
         }
     }

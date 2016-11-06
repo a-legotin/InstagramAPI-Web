@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
-using InstagramApi.API;
+using InstagramApi.Classes;
+using InstagramApi.Tests.Utils;
 using Xunit;
 
-namespace InstagramApi.Tests
+namespace InstagramApi.Tests.Tests
 {
     public class InstaApiTest
     {
@@ -42,7 +43,6 @@ namespace InstagramApi.Tests
         [InlineData("BL0fnggBAsU")]
         [InlineData("BMDFkBND-6k")]
         [InlineData("BMEiO2kj8Je")]
-
         public void GetMediaTest(string mediaCode)
         {
             //arrange
@@ -55,19 +55,21 @@ namespace InstagramApi.Tests
         }
 
         [Fact]
-        public void UserLoginSuccessTest()
+        public void GetUserFeedTest()
         {
             //arrange
             var username = "alex_codegarage";
             var password = Environment.GetEnvironmentVariable("instaapiuserpassword");
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials {UserName = username, Password = password});
             //act
-            bool success = apiInstance.Login();
-
+            apiInstance.Login();
+            var feed = apiInstance.GetUserFeed(1);
             //assert
-            Assert.True(success);
-            Assert.True(apiInstance.IsUserAuthenticated);
+            Assert.NotNull(feed);
+            Assert.NotNull(feed.FeedMedia);
+            Assert.NotNull(feed.SuggestedUsers);
+            Assert.True(feed.FeedPageInfo.HasNextPage);
         }
 
         [Fact]
@@ -76,7 +78,7 @@ namespace InstagramApi.Tests
             //arrange
             var username = "alex_codegarage";
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials {UserName = username});
             //act
             Action loginAction = () => apiInstance.Login();
             //assert
@@ -90,31 +92,29 @@ namespace InstagramApi.Tests
             var username = "alex_codegarage";
             var password = "sometestpassword";
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials {UserName = username, Password = password});
 
             //act
-            bool success = apiInstance.Login();
+            var success = apiInstance.Login();
             //assert
             Assert.False(success);
             Assert.False(apiInstance.IsUserAuthenticated);
         }
 
         [Fact]
-        public void GetUserFeedTest()
+        public void UserLoginSuccessTest()
         {
             //arrange
             var username = "alex_codegarage";
             var password = Environment.GetEnvironmentVariable("instaapiuserpassword");
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials {UserName = username, Password = password});
             //act
-            apiInstance.Login();
-            var feed = apiInstance.GetUserFeed(1);
+            var success = apiInstance.Login();
+
             //assert
-            Assert.NotNull(feed);
-            Assert.NotNull(feed.FeedMedia);
-            Assert.NotNull(feed.SuggestedUsers);
-            Assert.True(feed.FeedPageInfo.HasNextPage);
+            Assert.True(success);
+            Assert.True(apiInstance.IsUserAuthenticated);
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace InstagramApi.ResponseWrappers
@@ -10,6 +7,7 @@ namespace InstagramApi.ResponseWrappers
     {
         [JsonProperty("page_info")]
         public InstaFeedPageInfoResponse PageInfo { get; set; }
+
         [JsonProperty("nodes")]
         public List<InstaResponseMedia> Nodes { get; set; }
     }

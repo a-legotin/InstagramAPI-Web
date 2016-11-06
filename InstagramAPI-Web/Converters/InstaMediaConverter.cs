@@ -17,7 +17,8 @@ namespace InstagramApi.Converters
                 CaptionIsEdited = SourceObject.CaptionIsEdited,
                 Code = SourceObject.Code,
                 Date = DateTimeHelper.UnixTimestampToDateTime(double.Parse(SourceObject.Date)),
-                Dimensions = new Dimensions {Height = SourceObject.Dimensions.Height, Width = SourceObject.Dimensions.Width},
+                Dimensions =
+                    new Dimensions {Height = SourceObject.Dimensions.Height, Width = SourceObject.Dimensions.Width},
                 ImageSourceLink = SourceObject.ImageSourceLink,
                 InstaIdentifier = SourceObject.InstaIdentifier,
                 IsAdvertisement = SourceObject.IsAdvertisement,

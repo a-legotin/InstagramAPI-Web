@@ -13,7 +13,9 @@ namespace InstagramApi.Converters
         {
             if (SourceObject == null) throw new ArgumentNullException("Source object");
             var instaPosts = new InstaPostList();
-            instaPosts.AddRange(SourceObject.Items.Select(ConvertersFabric.GetSinglePostConverter).Select(converter => converter.Convert()));
+            instaPosts.AddRange(
+                SourceObject.Items.Select(ConvertersFabric.GetSinglePostConverter)
+                    .Select(converter => converter.Convert()));
             return instaPosts;
         }
     }

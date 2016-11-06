@@ -22,9 +22,12 @@ namespace InstagramApi.Converters
                 Images = new Images(),
                 Likes = new Likes()
             };
-            post.Images.LowResolution = new Image(SourceObject.Images.LowResolution.Url, SourceObject.Images.LowResolution.Width, SourceObject.Images.LowResolution.Height);
-            post.Images.Thumbnail = new Image(SourceObject.Images.Thumbnail.Url, SourceObject.Images.Thumbnail.Width, SourceObject.Images.Thumbnail.Height);
-            post.Images.StandartResolution = new Image(SourceObject.Images.StandartResolution.Url, SourceObject.Images.StandartResolution.Width, SourceObject.Images.StandartResolution.Height);
+            post.Images.LowResolution = new Image(SourceObject.Images.LowResolution.Url,
+                SourceObject.Images.LowResolution.Width, SourceObject.Images.LowResolution.Height);
+            post.Images.Thumbnail = new Image(SourceObject.Images.Thumbnail.Url, SourceObject.Images.Thumbnail.Width,
+                SourceObject.Images.Thumbnail.Height);
+            post.Images.StandartResolution = new Image(SourceObject.Images.StandartResolution.Url,
+                SourceObject.Images.StandartResolution.Width, SourceObject.Images.StandartResolution.Height);
             post.Likes.Count = SourceObject.LikesCount;
             var userConverter = ConvertersFabric.GetUserConverter(SourceObject.User);
             post.User = userConverter.Convert();

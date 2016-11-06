@@ -15,6 +15,5 @@
         public static string HEADER_XInstagramAJAX = "X-Instagram-AJAX";
         public static string HEADER_XRequestedWith = "X-Requested-With";
         public static string HEADER_XMLHttpRequest = "XMLHttpRequest";
-
     }
 }
