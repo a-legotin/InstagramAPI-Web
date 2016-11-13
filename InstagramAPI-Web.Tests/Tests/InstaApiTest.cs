@@ -34,8 +34,7 @@ namespace InstagramApi.Tests.Tests
             var posts = apiInstance.GetUserPosts();
             //assert
             Assert.NotNull(posts);
-            if (posts.Count > 0)
-                Assert.Equal(posts.FirstOrDefault().UserId, user.InstaIdentifier);
+            if (posts.Count > 0) Assert.Equal(posts.FirstOrDefault().UserId, user.InstaIdentifier);
         }
 
         [Theory]

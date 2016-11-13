@@ -39,10 +39,7 @@ namespace InstagramApi.API
                 $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.MAX_MEDIA_ID_POSTFIX}{Id}";
             string json;
             var task = _httpClient.GetStreamAsync(mediaUrl);
-            using (var reader = new StreamReader(task.Result))
-            {
-                json = reader.ReadToEnd();
-            }
+            using (var reader = new StreamReader(task.Result)) { json = reader.ReadToEnd(); }
             return JsonConvert.DeserializeObject<InstaResponse>(json);
         }
 
@@ -73,10 +70,7 @@ namespace InstagramApi.API
             string json;
 
             var stream = await _httpClient.GetStreamAsync(mediaUrl);
-            using (var reader = new StreamReader(stream))
-            {
-                json = reader.ReadToEnd();
-            }
+            using (var reader = new StreamReader(stream)) { json = reader.ReadToEnd(); }
 
             var instaresponse = JsonConvert.DeserializeObject<InstaResponse>(json);
             var converter = ConvertersFabric.GetPostsConverter(instaresponse);
@@ -110,14 +104,11 @@ namespace InstagramApi.API
 
         public async Task<bool> LoginAsync()
         {
-            if (string.IsNullOrEmpty(_user.UserName) || string.IsNullOrEmpty(_user.Password))
-                throw new ArgumentException("user name and password must be specified");
+            if (string.IsNullOrEmpty(_user.UserName) || string.IsNullOrEmpty(_user.Password)) throw new ArgumentException("user name and password must be specified");
             var firstResponse = await _httpClient.GetAsync(_httpClient.BaseAddress);
             var csrftoken = string.Empty;
             var cookies = _httpHandler.CookieContainer.GetCookies(_httpClient.BaseAddress);
-            foreach (Cookie cookie in cookies)
-                if (cookie.Name == InstaApiConstants.CSRFTOKEN)
-                    csrftoken = cookie.Value;
+            foreach (Cookie cookie in cookies) if (cookie.Name == InstaApiConstants.CSRFTOKEN) csrftoken = cookie.Value;
             var fields = new Dictionary<string, string>
             {
                 {"username", _user.UserName},
