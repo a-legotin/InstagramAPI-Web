@@ -25,13 +25,14 @@ namespace InstagramApi.Tests.Tests
 
         [Theory]
         [InlineData("alex_codegarage")]
+        [InlineData("instagram")]
         public void GetUserPostsTest(string username)
         {
             //arrange
             var apiInstance = TestHelpers.GetDefaultInstaApiInstance(username);
             //act
             var user = apiInstance.GetUser();
-            var posts = apiInstance.GetUserPosts();
+            var posts = apiInstance.GetUserPosts(2);
             //assert
             Assert.NotNull(posts);
             if (posts.Count > 0) Assert.Equal(posts.FirstOrDefault().UserId, user.InstaIdentifier);

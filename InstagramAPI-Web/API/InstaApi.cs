@@ -64,7 +64,7 @@ namespace InstagramApi.API
             return converter.Convert();
         }
 
-        public async Task<InstaPostList> GetUserPostsAsync()
+        public async Task<InstaPostList> GetUserPostsAsync(int pageCount)
         {
             var posts = new InstaPostList();
             string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.MEDIA}";
@@ -76,8 +76,10 @@ namespace InstagramApi.API
             var instaresponse = JsonConvert.DeserializeObject<InstaResponse>(json);
             var converter = ConvertersFabric.GetPostsConverter(instaresponse);
             posts.AddRange(converter.Convert());
-            while (instaresponse.MoreAvailable)
+            int pages = 1;
+            while (instaresponse.MoreAvailable && pages <= pageCount)
             {
+                pages++;
                 instaresponse = _getUserPostsResponseWithMaxId(instaresponse.GetLastId());
                 converter = ConvertersFabric.GetPostsConverter(instaresponse);
                 posts.AddRange(converter.Convert());
@@ -114,8 +116,7 @@ namespace InstagramApi.API
                 {"username", _user.UserName},
                 {"password", _user.Password}
             };
-            var request = new HttpRequestMessage(HttpMethod.Post, InstaApiConstants.ACCOUNTS_LOGIN_AJAX);
-            request.Content = new FormUrlEncodedContent(fields);
+            var request = new HttpRequestMessage(HttpMethod.Post, InstaApiConstants.ACCOUNTS_LOGIN_AJAX) { Content = new FormUrlEncodedContent(fields) };
 
             request.Headers.Referrer = new Uri(_httpClient.BaseAddress, InstaApiConstants.ACCOUNTS_LOGIN);
             request.Headers.Add(InstaApiConstants.HEADER_XCSRFToken, _user.Token);
@@ -153,9 +154,9 @@ namespace InstagramApi.API
             return user;
         }
 
-        public InstaPostList GetUserPosts()
+        public InstaPostList GetUserPosts(int pageCount)
         {
-            var posts = GetUserPostsAsync().Result;
+            var posts = GetUserPostsAsync(pageCount).Result;
             return posts;
         }
 
