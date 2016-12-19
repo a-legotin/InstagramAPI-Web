@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using InstagramApi.Classes;
 using InstagramApi.Converters;
+using InstagramApi.Helpers;
 using InstagramApi.Logger;
 using InstagramApi.ResponseWrappers;
 using Newtonsoft.Json;
@@ -106,9 +107,8 @@ namespace InstagramApi.API
         {
             if (string.IsNullOrEmpty(_user.UserName) || string.IsNullOrEmpty(_user.Password)) throw new ArgumentException("user name and password must be specified");
             var firstResponse = await _httpClient.GetAsync(_httpClient.BaseAddress);
-            var csrftoken = string.Empty;
             var cookies = _httpHandler.CookieContainer.GetCookies(_httpClient.BaseAddress);
-            foreach (Cookie cookie in cookies) if (cookie.Name == InstaApiConstants.CSRFTOKEN) csrftoken = cookie.Value;
+            foreach (Cookie cookie in cookies) if (cookie.Name == InstaApiConstants.CSRFTOKEN) _user.Token = cookie.Value;
             var fields = new Dictionary<string, string>
             {
                 {"username", _user.UserName},
@@ -118,7 +118,7 @@ namespace InstagramApi.API
             request.Content = new FormUrlEncodedContent(fields);
 
             request.Headers.Referrer = new Uri(_httpClient.BaseAddress, InstaApiConstants.ACCOUNTS_LOGIN);
-            request.Headers.Add(InstaApiConstants.HEADER_XCSRFToken, csrftoken);
+            request.Headers.Add(InstaApiConstants.HEADER_XCSRFToken, _user.Token);
             request.Headers.Add(InstaApiConstants.HEADER_XInstagramAJAX, "1");
             request.Headers.Add(InstaApiConstants.HEADER_XRequestedWith, InstaApiConstants.HEADER_XMLHttpRequest);
 
@@ -132,14 +132,13 @@ namespace InstagramApi.API
         {
             if (!IsUserAuthenticated) throw new Exception("user must be authenticated");
             var feedUrl = $"{InstaApiConstants.INSTAGRAM_URL.TrimEnd('/')}{InstaApiConstants.GET_ALL_POSTFIX}";
-            var stream = await _httpClient.GetStreamAsync(feedUrl);
-            InstaFeedResponse feedResponse;
-            using (var reader = new StreamReader(stream))
-            {
-                var json = await reader.ReadToEndAsync();
-                var root = JObject.Parse(json);
-                feedResponse = JsonConvert.DeserializeObject<InstaFeedResponse>(json);
-            }
+            var request = HttpHelper.GetDefaultRequest(HttpMethod.Get, new Uri(feedUrl));
+            request.Headers.Add(InstaApiConstants.HEADER_XCSRFToken, _user.Token);
+            request.Headers.Add(InstaApiConstants.HEADER_XInstagramAJAX, "1");
+            request.Headers.Add(InstaApiConstants.HEADER_XRequestedWith, InstaApiConstants.HEADER_XMLHttpRequest);
+            var response = await _httpClient.SendAsync(request);
+            var json = await response.Content.ReadAsStringAsync();
+            var feedResponse = JsonConvert.DeserializeObject<InstaFeedResponse>(json);
             var converter = ConvertersFabric.GetFeedConverter(feedResponse);
             return converter.Convert();
         }
