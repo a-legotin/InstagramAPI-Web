@@ -1,4 +1,4 @@
-version: 1.1.{build}
+version: 1.2.0 ({build})
 os: Visual Studio 2015
 platform: Any CPU
 configuration: Release
@@ -24,7 +24,7 @@ build_script:
   - ps: cd ../InstagramAPI-Web.Tests
   - ps: dotnet restore
   - ps: dotnet --verbose build
-  - ps: dotnet --verbose test
+  - ps: dotnet --verbose test -parallel none
   - ps: cd ..
 
 assembly_info:
