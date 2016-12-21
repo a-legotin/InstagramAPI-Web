@@ -1,4 +1,4 @@
-version: 1.1.{build}
+version: 1.2.0 ({build})
 os: Visual Studio 2015
 platform: Any CPU
 configuration: Release
@@ -7,6 +7,8 @@ branches:
   only:
     - release
     - master
+skip_commits:
+  message: /skip ci/      # Regex for matching commit message
 
 skip_tags: true
 
@@ -24,20 +26,13 @@ build_script:
   - ps: cd ../InstagramAPI-Web.Tests
   - ps: dotnet restore
   - ps: dotnet --verbose build
-  - ps: dotnet --verbose test
+  - ps: dotnet --verbose test -parallel none
   - ps: cd ..
-
-assembly_info:
-  patch: true
-  file: project.json
-  assembly_version: "{version}"
-  assembly_file_version: "{version}"
-  assembly_informational_version: "{version}"
 
 environment:
   instaapiuserpassword:
-    secure: 2DmbP+MHwes0M3ahyTWDkA==
-
+    secure: 7eAl+O5i5BxXWexd26z+wg==
+    
 artifacts:
 
   - path: InstagramAPI-Web\bin\$(configuration)\netstandard1.6\*.dll

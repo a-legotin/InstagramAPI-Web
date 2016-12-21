@@ -7,7 +7,7 @@ Note that: there is a [repository based on Instagram API for mobile devices](htt
 [![Build Status](https://travis-ci.org/a-legotin/InstagramAPI-Web.svg?branch=master)](https://travis-ci.org/a-legotin/InstagramAPI-Web)
 
 #### Current version: 1.1.* [Under development]
-#### [Why two separate repos with same mission?](https://github.com/a-legotin/InstagramAPI-Web/wiki/Difference-between-API-Web-and-just-API-repositories)
+#### [Why two separate repos with same mission?](https://github.com/a-legotin/InstagramAPI/wiki/Difference-between-API-Web-and-just-API-repositories)
 ## Cross-platform by design
 Build with dotnet core. Can be used on Mac, Linux, Windows.
 
@@ -39,9 +39,9 @@ InstaPostList posts = api.GetUserPosts();
 InstaMedia mediaItem = api.GetMediaByCode();
 ```
 
-####[Known issues](https://github.com/a-legotin/InstagramAPI-Web/issues?q=is%3Aopen+is%3Aissue+label%3Aknown)
+####[Known issues](https://github.com/a-legotin/InstagramAPI/issues?q=is%3Aopen+is%3Aissue+label%3Aknown)
 
-####[WIKI](https://github.com/a-legotin/InstagramAPI-Web/wiki)
+####[WIKI](https://github.com/a-legotin/InstagramAPI/wiki)
 
 # License
 
