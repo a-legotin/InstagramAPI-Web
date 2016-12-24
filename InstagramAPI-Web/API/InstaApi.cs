@@ -64,27 +64,14 @@ namespace InstagramApi.API
             return converter.Convert();
         }
 
-        public async Task<InstaPostList> GetUserPostsAsync(int pageCount)
+        public InstaPostList GetUserPostsByUsername(string username, int pageCount = 0)
         {
-            var posts = new InstaPostList();
-            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{_user.UserName}{InstaApiConstants.MEDIA}";
-            string json;
+            return GetUserPostsByUsernameAsync(username, pageCount).Result;
+        }
 
-            var stream = await _httpClient.GetStreamAsync(mediaUrl);
-            using (var reader = new StreamReader(stream)) { json = reader.ReadToEnd(); }
-
-            var instaresponse = JsonConvert.DeserializeObject<InstaResponse>(json);
-            var converter = ConvertersFabric.GetPostsConverter(instaresponse);
-            posts.AddRange(converter.Convert());
-            int pages = 1;
-            while (instaresponse.MoreAvailable && pages <= pageCount)
-            {
-                pages++;
-                instaresponse = _getUserPostsResponseWithMaxId(instaresponse.GetLastId());
-                converter = ConvertersFabric.GetPostsConverter(instaresponse);
-                posts.AddRange(converter.Convert());
-            }
-            return posts;
+        public async Task<InstaPostList> GetUserPostsAsync(int pageCount = 0)
+        {
+            return await GetUserPostsByUsernameAsync(_user.UserName, pageCount);
         }
 
 
@@ -157,6 +144,29 @@ namespace InstagramApi.API
         public InstaPostList GetUserPosts(int pageCount)
         {
             var posts = GetUserPostsAsync(pageCount).Result;
+            return posts;
+        }
+
+        public async Task<InstaPostList> GetUserPostsByUsernameAsync(string username, int pageCount = 0)
+        {
+            var posts = new InstaPostList();
+            string mediaUrl = $"{InstaApiConstants.INSTAGRAM_URL}{username}{InstaApiConstants.MEDIA}";
+            string json;
+
+            var stream = await _httpClient.GetStreamAsync(mediaUrl);
+            using (var reader = new StreamReader(stream)) { json = reader.ReadToEnd(); }
+
+            var instaresponse = JsonConvert.DeserializeObject<InstaResponse>(json);
+            var converter = ConvertersFabric.GetPostsConverter(instaresponse);
+            posts.AddRange(converter.Convert());
+            var pages = 1;
+            while (instaresponse.MoreAvailable && (pages <= pageCount))
+            {
+                pages++;
+                instaresponse = _getUserPostsResponseWithMaxId(instaresponse.GetLastId());
+                converter = ConvertersFabric.GetPostsConverter(instaresponse);
+                posts.AddRange(converter.Convert());
+            }
             return posts;
         }
 
