@@ -13,6 +13,4 @@ script:
   - cd InstagramAPI-Web
   - dotnet --verbose build
   - cd ../InstagramAPI-Web.Tests
-  - dotnet --verbose build
-  - dotnet --verbose test -parallel none
-  
+  - dotnet --verbose build  

@@ -8,8 +8,12 @@ namespace InstagramApi.API
         bool IsUserAuthenticated { get; }
         InstaUser GetUser();
         Task<InstaUser> GetUserAsync();
-        InstaPostList GetUserPosts(int pageCount);
-        Task<InstaPostList> GetUserPostsAsync(int pageCount);
+        InstaPostList GetUserPosts(int pageCount = 0);
+        InstaPostList GetUserPostsByUsername(string username, int pageCount = 0);
+
+        Task<InstaPostList> GetUserPostsByUsernameAsync(string username, int pageCount = 0);
+
+        Task<InstaPostList> GetUserPostsAsync(int pageCount = 0);
         InstaMedia GetMediaByCode(string postCode);
         Task<InstaMedia> GetMediaByCodeAsync(string postCode);
         bool Login();

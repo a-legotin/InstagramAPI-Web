@@ -31,7 +31,7 @@ build_script:
 
 environment:
   instaapiuserpassword:
-    secure: 7eAl+O5i5BxXWexd26z+wg==
+    secure: nnYZaMQMW7nSWIAOz7myWw==
     
 artifacts:
 
