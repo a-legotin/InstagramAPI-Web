@@ -6,7 +6,7 @@ Note that: there is a [repository based on Instagram API for mobile devices](htt
 [![Build status](https://ci.appveyor.com/api/projects/status/nb2h0hyxtkjuskhl?svg=true)](https://ci.appveyor.com/project/a-legotin/instagramapi-web)
 [![Build Status](https://travis-ci.org/a-legotin/InstagramAPI-Web.svg?branch=master)](https://travis-ci.org/a-legotin/InstagramAPI-Web)
 
-#### Current version: 1.1.* [Under development]
+#### Current version: 1.2.1
 #### [Why two separate repos with same mission?](https://github.com/a-legotin/InstagramAPI/wiki/Difference-between-API-Web-and-just-API-repositories)
 ## Cross-platform by design
 Build with dotnet core. Can be used on Mac, Linux, Windows.
