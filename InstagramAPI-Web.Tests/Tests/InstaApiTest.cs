@@ -17,7 +17,7 @@ namespace InstagramApi.Tests.Tests
             //arrange
             var apiInstance = TestHelpers.GetDefaultInstaApiInstance(username);
             //act
-            var user = apiInstance.GetUser();
+            var user = apiInstance.GetCurrentUser();
             //assert
             Assert.NotNull(user);
             Assert.Equal(user.UserName, username);
@@ -31,11 +31,30 @@ namespace InstagramApi.Tests.Tests
             //arrange
             var apiInstance = TestHelpers.GetDefaultInstaApiInstance(username);
             //act
-            var user = apiInstance.GetUser();
-            var posts = apiInstance.GetUserPosts(2);
+            var user = apiInstance.GetUser(username);
+            var posts = apiInstance.GetUserPosts(5);
             //assert
             Assert.NotNull(posts);
             if (posts.Count > 0) Assert.Equal(posts.FirstOrDefault().UserId, user.InstaIdentifier);
+            var anyMediaDuplicate = posts.GroupBy(x => x.Code).Any(g => g.Count() > 1);
+            Assert.False(anyMediaDuplicate);
+        }
+
+        [Theory]
+        [InlineData("alex_codegarage")]
+        [InlineData("instagram")]
+        public void GetUserPostsByUsernameTest(string username)
+        {
+            //arrange
+            var apiInstance = TestHelpers.GetDefaultInstaApiInstance(username);
+            //act
+            var user = apiInstance.GetCurrentUser();
+            var posts = apiInstance.GetUserPostsByUsername(username, 5);
+            //assert
+            Assert.NotNull(posts);
+            if (posts.Count > 0) Assert.Equal(posts.FirstOrDefault().UserId, user.InstaIdentifier);
+            var anyMediaDuplicate = posts.GroupBy(x => x.Code).Any(g => g.Count() > 1);
+            Assert.False(anyMediaDuplicate);
         }
 
         [Theory]
@@ -61,7 +80,7 @@ namespace InstagramApi.Tests.Tests
             var username = "alex_codegarage";
             var password = Environment.GetEnvironmentVariable("instaapiuserpassword");
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials {UserName = username, Password = password});
             //act
             apiInstance.Login();
             var feed = apiInstance.GetUserFeed(1);
@@ -70,6 +89,8 @@ namespace InstagramApi.Tests.Tests
             Assert.NotNull(feed.FeedMedia);
             Assert.NotNull(feed.SuggestedUsers);
             Assert.True(feed.FeedPageInfo.HasNextPage);
+            var anyMediaDuplicate = feed.FeedMedia.GroupBy(x => x.Code).Any(g => g.Count() > 1);
+            Assert.False(anyMediaDuplicate);
         }
 
         [Fact]
@@ -78,7 +99,7 @@ namespace InstagramApi.Tests.Tests
             //arrange
             var username = "alex_codegarage";
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials {UserName = username});
             //act
             Action loginAction = () => apiInstance.Login();
             //assert
@@ -92,7 +113,7 @@ namespace InstagramApi.Tests.Tests
             var username = "alex_codegarage";
             var password = "sometestpassword";
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials {UserName = username, Password = password});
 
             //act
             var success = apiInstance.Login();
@@ -108,7 +129,7 @@ namespace InstagramApi.Tests.Tests
             var username = "alex_codegarage";
             var password = Environment.GetEnvironmentVariable("instaapiuserpassword");
             var apiInstance =
-                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials { UserName = username, Password = password });
+                TestHelpers.GetDefaultInstaApiInstance(new UserCredentials {UserName = username, Password = password});
             //act
             var success = apiInstance.Login();
 
